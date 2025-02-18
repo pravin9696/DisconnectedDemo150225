@@ -1,5 +1,7 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AddEmployee.aspx.cs" Inherits="DisconnectedDemo150225.AddEmployee" %>
 
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
+
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -33,8 +35,7 @@
                         <asp:TextBox ID="txtEmpId" runat="server"></asp:TextBox>
                     </td>
                     <td>
-                        <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtEmpId" ErrorMessage="emp ID requried">*</asp:RequiredFieldValidator>
-                    </td>
+                        &nbsp;</td>
                 </tr>
                 <tr>
                     <td class="auto-style2">
@@ -44,8 +45,7 @@
                         <asp:TextBox ID="txtName" runat="server"></asp:TextBox>
                     </td>
                     <td>
-                        <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtName" ErrorMessage="emp ID requried">*</asp:RequiredFieldValidator>
-                    </td>
+                        &nbsp;</td>
                 </tr>
                 <tr>
                     <td class="auto-style2">
@@ -55,8 +55,7 @@
                         <asp:TextBox ID="txtMobile" runat="server"></asp:TextBox>
                     </td>
                     <td>
-                        <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="txtMobile" ErrorMessage="emp ID requried">*</asp:RequiredFieldValidator>
-                    </td>
+                        &nbsp;</td>
                 </tr>
                 <tr>
                     <td class="auto-style2">
@@ -66,8 +65,7 @@
                         <asp:TextBox ID="txtCity" runat="server"></asp:TextBox>
                     </td>
                     <td>
-                        <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ControlToValidate="txtCity" ErrorMessage="emp ID requried">*</asp:RequiredFieldValidator>
-                    </td>
+                        &nbsp;</td>
                 </tr>
                 <tr>
                     <td class="auto-style2">
@@ -94,8 +92,37 @@
                         <br />
                         <asp:Button ID="Button8" runat="server" OnClick="Button8_Click" Text="Insert SP" />
                     </td>
-                    <td class="auto-style3">&nbsp;</td>
-                    <td>&nbsp;</td>
+                    <td class="auto-style3">
+                        <asp:Button ID="Button9" runat="server" OnClick="Button9_Click" Text="Update Command" />
+                        <br />
+                        <br />
+                        <asp:Button ID="Button10" runat="server" OnClick="Button10_Click" Text="update Using SP" />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <asp:ScriptManager ID="ScriptManager1" runat="server">
+                        </asp:ScriptManager>
+                        <asp:TextBox ID="TextBox1" runat="server" AutoPostBack="True" OnTextChanged="TextBox1_TextChanged"></asp:TextBox>
+                        <ajaxToolkit:CalendarExtender ID="CalendarExtender1" runat="server" TargetControlID="TextBox1"/>
+                        <br />
+                        <br />
+                        <br />
+                    </td>
+                    <td>
+                        <asp:Button ID="Button11" runat="server" OnClick="Button11_Click" Text="Delete By SP" />
+                        <br />
+                        <br />
+                        <br />
+                        <asp:DropDownList ID="DropDownList1" runat="server">
+                            <asp:ListItem Selected="True">select Item</asp:ListItem>
+                            <asp:ListItem>AA</asp:ListItem>
+                            <asp:ListItem>BB</asp:ListItem>
+                            <asp:ListItem>CC</asp:ListItem>
+                        </asp:DropDownList>
+                        <br />
+                        <br />
+                    </td>
                 </tr>
             </table>
 

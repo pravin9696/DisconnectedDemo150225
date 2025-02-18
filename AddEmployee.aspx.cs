@@ -322,15 +322,15 @@ namespace DisconnectedDemo150225
             DataTable dt = new DataTable();
             adp.Fill(dt);
 
-            DataRow row = dt.NewRow();
+            //DataRow row = dt.NewRow();
 
 
-            row[0] = empid;
-            row["empName"] = name;
-            row["mobile"] = mobile;
-            row["city"] = city;
+            //row[0] = empid;
+            //row["empName"] = name;
+            //row["mobile"] = mobile;
+            //row["city"] = city;
 
-            dt.Rows.Add(row);
+            //dt.Rows.Add(row);
 
 
             SqlCommand cmd = new SqlCommand("spInsert", Con);
@@ -353,6 +353,134 @@ namespace DisconnectedDemo150225
             {
                 Response.Write("<script>alert('Not Inserted!!!');</script>");
             }
+        }
+
+        protected void Button9_Click(object sender, EventArgs e)
+        {
+            int empid = int.Parse(txtEmpId.Text);
+            string name = txtName.Text;
+            int mobile = int.Parse(txtMobile.Text);
+            string city = txtCity.Text;
+
+            string qry = $"update employee set empName='{name}',mobile={mobile},city='{city}' where empID={empid}";
+
+            SqlConnection Con = new SqlConnection("Data Source=.;Initial Catalog=myDB;Integrated Security=True;TrustServerCertificate=True");
+
+            SqlDataAdapter adp = new SqlDataAdapter($"select * from employee where empID={empid}", Con);
+            DataTable dt = new DataTable();
+            adp.Fill(dt);
+
+            if (dt.Rows.Count>0)// if(ds.tables["employee"].Rows.Count>0)
+            {
+               dt.Rows[0]["empName"] = name;
+                dt.Rows[0]["mobile"] = mobile;
+                dt.Rows[0]["city"] = city;
+            }
+            SqlCommand cmd = new SqlCommand(qry, Con);
+            adp.UpdateCommand = cmd;
+
+            int n = adp.Update(dt);
+
+            if (n > 0)
+            {
+                Response.Write("<script>alert('record updated successfully...');</script>");
+            }
+            else
+            {
+                Response.Write("<script>alert('Not Updated!!!');</script>");
+            }
+        }
+
+        protected void TextBox1_TextChanged(object sender, EventArgs e)
+        {
+            DropDownList1.SelectedIndex = 0;
+        }
+
+        protected void Button10_Click(object sender, EventArgs e)
+        {
+            int empid = int.Parse(txtEmpId.Text);
+            string name = txtName.Text;
+            int mobile = int.Parse(txtMobile.Text);
+            string city = txtCity.Text;
+
+            string qry = $"SPupdateEmp";
+            SqlConnection Con = new SqlConnection("Data Source=.;Initial Catalog=myDB;Integrated Security=True;TrustServerCertificate=True");
+
+            SqlDataAdapter adp = new SqlDataAdapter($"select * from employee where empID={empid}", Con);
+            DataTable dt = new DataTable();
+            adp.Fill(dt);
+            if (dt.Rows.Count > 0)// if(ds.tables["employee"].Rows.Count>0)
+            {
+                dt.Rows[0]["empName"] = name;
+                dt.Rows[0]["mobile"] = mobile;
+                dt.Rows[0]["city"] = city;
+            }
+            /*SqlCommand cmd = new SqlCommand("SPupdateEmp", Con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            //@eid=33,@ename='QQQQ',@mb=1111,@cty='Pune'
+            cmd.Parameters.AddWithValue("@eid", empid);
+            cmd.Parameters.AddWithValue("@ename", name);
+            cmd.Parameters.AddWithValue("@mb", mobile);
+            cmd.Parameters.AddWithValue("@cty", city);
+            
+            adp.UpdateCommand = cmd;
+            */
+
+            adp.UpdateCommand = new SqlCommand("SPupdateEmp", Con);
+            adp.UpdateCommand.CommandType = CommandType.StoredProcedure;
+            adp.UpdateCommand.Parameters.Add("@eid", SqlDbType.Int).Value = empid;
+            adp.UpdateCommand.Parameters.AddWithValue("@ename", name);
+            adp.UpdateCommand.Parameters.AddWithValue("@mb", mobile);
+            adp.UpdateCommand.Parameters.AddWithValue("@cty", city);
+
+            int n = adp.Update(dt);
+
+            if (n > 0)
+            {
+                Response.Write("<script>alert('record updated successfully...');</script>");
+            }
+            else
+            {
+                Response.Write("<script>alert('Not Updated!!!');</script>");
+            }
+        }
+
+        protected void Button11_Click(object sender, EventArgs e)
+        {
+            string eid = txtEmpId.Text;
+
+            SqlConnection con = new SqlConnection("Data Source=.;Initial Catalog=myDB;Integrated Security=True;TrustServerCertificate=True");
+
+            SqlDataAdapter adp = new SqlDataAdapter($"select * from employee where empid={eid}",con);
+
+            DataSet ds = new DataSet();
+            adp.Fill(ds, "employee");
+
+            if (ds.Tables["employee"].Rows.Count>0)
+            {
+                ds.Tables["employee"].Rows[0].Delete();
+
+                adp.DeleteCommand = new SqlCommand("SPDeleteEmpById", con);
+                adp.DeleteCommand.CommandType = CommandType.StoredProcedure;
+                adp.DeleteCommand.Parameters.AddWithValue("@eid", eid);
+
+                int n=adp.Update(ds, "employee");
+
+                if (n > 0)
+                {
+                    Response.Write("<script>alert('record Deleted successfully...');</script>");
+                }
+                else
+                {
+                    Response.Write("<script>alert('Not Deleted!!!');</script>");
+                }
+
+            }
+            else
+            {
+                Response.Write("<script>alert('record NOT found!!!!');</script>");
+            }
+
         }
     }
 }
